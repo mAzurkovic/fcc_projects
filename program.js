@@ -1,6 +1,13 @@
-var sum = 0
-for (var i = 2; i < process.argv.length; i++) {
-  sum += Number(process.argv[i])
-}
+var fs = require('fs')
 
-console.log(sum)
+fs.readFile(process.argv[2], (err, data) => {
+    if (err) throw err;
+    var buffer = data.toString().split()
+    var newLines = 0
+    for (var i = 0; i < buffer[0].length; i++) {
+        if (buffer[0][i] == "\n") {
+            newLines += 1;
+        }
+    }
+    console.log(newLines)
+})
