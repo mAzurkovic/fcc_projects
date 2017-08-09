@@ -1,42 +1,11 @@
-var http = require('http')
-var bl = require('bl')
+const http = require('http');
+const fs = require('fs');
 
-urlOne = process.argv[2]
-urlTwo = process.argv[3]
-urlThree = process.argv[4]
+var port = process.argv[2]
+var file = process.argv[3]
 
-returnOne = ''
-returnTwo = ''
-returnThree = ''
-
-http.get(urlOne, (res) => {
-  res.setEncoding('utf8')
-  res.pipe(bl( (err, data) => {
-    returnOne += data.toString()
-  } ))
-  res.on('end', () => {
-    console.log(returnOne)
-
-    http.get(urlTwo, (res) => {
-      res.setEncoding('utf8')
-      res.pipe(bl( (err, data) => {
-        returnTwo += data.toString()
-      } ))
-      res.on('end', () => {
-        console.log(returnTwo)
-
-        http.get(urlThree, (res) => {
-          res.setEncoding('utf8')
-          res.pipe(bl( (err, data) => {
-            returnThree += data.toString()
-          } ))
-          res.on('end', () => {
-            console.log(returnThree)
-
-
-          })
-        })
-      })
-    })
-  })
+var server = http.createServer((req, res) => {
+   fs.createReadStream(file).pipe(res)
 })
+
+server.listen(port)
