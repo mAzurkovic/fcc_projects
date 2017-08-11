@@ -1,5 +1,6 @@
 var express = require('express')
 var bodyparser = require('body-parser')
+var fs = require('fs')
 
 var app = express()
 
@@ -17,6 +18,15 @@ app.use(bodyparser.urlencoded({extended: false}))
 app.get('/home', function(req, res) {
   res.render('index', {date: new Date().toDateString()})
 })*/
+
+app.get('/books', function(req, res) {
+  fs.readFile(process.argv[3], (err, data) => {
+    if (err) throw err;
+    var object = JSON.parse(data.toString())
+    console.log(object)
+    res.send(object)
+  })
+})
 
 app.post('/form', function(req, res) {
   console.log(req.body.str.split('').reverse().join(''));
